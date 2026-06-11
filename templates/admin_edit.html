@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}Edit Scheme — Admin{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="max-width:720px;">
+
+  <a href="{{ url_for('admin_dashboard') }}"
+     style="display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-weight:600;text-decoration:none;font-size:0.9rem;margin-bottom:1.5rem;">
+    <i class="bi bi-arrow-left-circle-fill"></i> Back to Dashboard
+  </a>
+
+  <div style="background:#fff;border-radius:18px;box-shadow:var(--shadow-md);padding:2.5rem;border:1.5px solid #e8edf5;">
+
+    <h1 style="font-family:'Poppins',sans-serif;font-weight:800;color:var(--primary);font-size:1.6rem;margin-bottom:0.3rem;">
+      ✏️ Edit Scheme
+    </h1>
+    <div class="section-divider"></div>
+
+    <form method="POST" action="{{ url_for('admin_edit', scheme_id=scheme['id']) }}"
+          id="schemeForm" novalidate>
+
+      <div class="mb-3">
+        <label class="form-label-custom">Scheme Name <span style="color:var(--danger);">*</span></label>
+        <input type="text" name="name" class="form-control-custom"
+               value="{{ scheme['name'] }}" placeholder="Scheme name" required />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label-custom">Category <span style="color:var(--danger);">*</span></label>
+        <select name="category" class="form-select-custom" required>
+          {% for cat in ['Women Welfare', 'Rural Education', 'Children Welfare', 'Agriculture', 'Health', 'Housing', 'Other'] %}
+          <option value="{{ cat }}" {% if scheme['category'] == cat %}selected{% endif %}>{{ cat }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label-custom">Eligibility Criteria <span style="color:var(--danger);">*</span></label>
+        <textarea name="eligibility" class="form-control-custom" rows="3" required>{{ scheme['eligibility'] }}</textarea>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label-custom">Benefits <span style="color:var(--danger);">*</span></label>
+        <textarea name="benefits" class="form-control-custom" rows="3" required>{{ scheme['benefits'] }}</textarea>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label-custom">
+          Required Documents <span style="color:var(--danger);">*</span>
+          <small style="font-weight:400;color:var(--text-muted);">(separate with |)</small>
+        </label>
+        <textarea name="documents" class="form-control-custom" rows="2" required>{{ scheme['documents'] }}</textarea>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label-custom">
+          Application Procedure <span style="color:var(--danger);">*</span>
+          <small style="font-weight:400;color:var(--text-muted);">(separate steps with |)</small>
+        </label>
+        <textarea name="procedure" class="form-control-custom" rows="3" required>{{ scheme['procedure'] }}</textarea>
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label-custom">Official Website URL <span style="color:var(--danger);">*</span></label>
+        <input type="url" name="website" class="form-control-custom"
+               value="{{ scheme['website'] }}" placeholder="https://example.gov.in" required />
+      </div>
+
+      <div id="formErrors" style="display:none;background:#fce4ec;border-radius:10px;padding:0.8rem 1rem;font-size:0.85rem;color:var(--danger);margin-bottom:1rem;"></div>
+
+      <div class="d-flex gap-3">
+        <button type="submit" class="btn-eligibility" style="border-radius:12px;">
+          <i class="bi bi-check-lg me-1"></i> Update Scheme
+        </button>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn"
+           style="border:2px solid #ccc;color:var(--text-muted);border-radius:12px;padding:0.65rem 1.5rem;font-weight:600;text-decoration:none;">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.getElementById('schemeForm').addEventListener('submit', function(e) {
+    const fields = ['name','category','eligibility','benefits','documents','procedure','website'];
+    const errors = [];
+    fields.forEach(f => {
+      const el = document.querySelector(`[name="${f}"]`);
+      if (!el || !el.value.trim()) errors.push(`"${f}" is required.`);
+    });
+    if (errors.length) {
+      e.preventDefault();
+      const box = document.getElementById('formErrors');
+      box.style.display = 'block';
+      box.innerHTML = '⚠️ ' + errors.join('<br>⚠️ ');
+      box.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+</script>
+{% endblock %}

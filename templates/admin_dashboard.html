@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard — Government Scheme App{% endblock %}
+{% block content %}
+<div class="container-xl py-5">
+
+  <!-- Top bar -->
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    <div>
+      <h1 class="section-heading">🛡️ Admin Dashboard</h1>
+      <div class="section-divider"></div>
+      <p style="color:var(--text-muted);font-size:0.9rem;">Manage all government schemes</p>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+      <a href="{{ url_for('admin_add') }}" class="btn-eligibility text-decoration-none" style="font-size:0.9rem;padding:0.5rem 1.3rem;">
+        <i class="bi bi-plus-circle"></i> Add New Scheme
+      </a>
+      <a href="{{ url_for('admin_logout') }}" class="btn" style="border:2px solid var(--danger);color:var(--danger);border-radius:50px;padding:0.5rem 1.3rem;font-weight:600;font-size:0.9rem;text-decoration:none;">
+        <i class="bi bi-box-arrow-right"></i> Logout
+      </a>
+    </div>
+  </div>
+
+  <!-- Stat cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+      <div style="background:#fff;border-radius:14px;padding:1.2rem;box-shadow:var(--shadow-sm);border:1.5px solid #e8edf5;text-align:center;">
+        <div style="font-size:1.8rem;font-weight:800;color:var(--primary);">{{ schemes|length }}</div>
+        <div style="font-size:0.78rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">Total Schemes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="schemes-table">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Scheme Name</th>
+          <th>Category</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in schemes %}
+        <tr>
+          <td style="color:var(--text-muted);font-size:0.82rem;">{{ loop.index }}</td>
+          <td><strong style="color:var(--primary);">{{ s['name'] }}</strong></td>
+          <td>
+            <span class="badge-category
+              {% if 'Women' in s['category'] %}badge-women
+              {% elif 'Rural' in s['category'] %}badge-rural
+              {% elif 'Child' in s['category'] %}badge-child
+              {% else %}badge-default{% endif %}">
+              {{ s['category'] }}
+            </span>
+          </td>
+          <td>
+            <div class="d-flex gap-2 flex-wrap">
+              <a href="{{ url_for('scheme_detail', scheme_id=s['id']) }}"
+                 class="btn btn-sm" style="border-radius:8px;border:1.5px solid var(--primary-light);color:var(--primary-light);font-weight:600;font-size:0.8rem;text-decoration:none;">
+                <i class="bi bi-eye me-1"></i>View
+              </a>
+              <a href="{{ url_for('admin_edit', scheme_id=s['id']) }}"
+                 class="btn btn-sm" style="border-radius:8px;background:#fff8e1;border:1.5px solid var(--accent);color:#b7700a;font-weight:600;font-size:0.8rem;text-decoration:none;">
+                <i class="bi bi-pencil me-1"></i>Edit
+              </a>
+              <form method="POST" action="{{ url_for('admin_delete', scheme_id=s['id']) }}"
+                    onsubmit="return confirm('Delete \'{{ s['name'] }}\'? This cannot be undone.');">
+                <button type="submit" class="btn btn-sm" style="border-radius:8px;background:#fce4ec;border:1.5px solid #f48fb1;color:var(--danger);font-weight:600;font-size:0.8rem;">
+                  <i class="bi bi-trash me-1"></i>Delete
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if not schemes %}
+  <div class="no-results-box">
+    <div class="no-icon">📋</div>
+    <h5>No schemes yet.</h5>
+    <a href="{{ url_for('admin_add') }}" class="btn-eligibility text-decoration-none mt-2" style="display:inline-flex;">
+      <i class="bi bi-plus"></i> Add First Scheme
+    </a>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

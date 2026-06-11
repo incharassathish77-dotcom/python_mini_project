@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}Eligible Schemes — Government Scheme App{% endblock %}
+
+{% block content %}
+
+<!-- Result Header -->
+<div class="result-header-card" style="border-radius:0;margin:0;padding:2.5rem 1rem 2rem;">
+  <div class="container text-center">
+    <div style="font-size:3rem;margin-bottom:0.8rem;">
+      {% if eligible %}🎉{% else %}😔{% endif %}
+    </div>
+    <h1 style="font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(1.5rem,3vw,2rem);">
+      {% if eligible %}
+        <span data-en="You are eligible for {{ eligible|length }} scheme(s)!"
+              data-hi="{{ eligible|length }} योजना(ओं) के लिए पात्र हैं!"
+              data-kn="{{ eligible|length }} ಯೋಜನೆ(ಗಳಿಗೆ) ಅರ್ಹರಾಗಿರುತ್ತೀರಿ!">
+          You are eligible for {{ eligible|length }} scheme(s)!
+        </span>
+      {% else %}
+        <span data-en="No specific schemes found for your profile"
+              data-hi="आपके प्रोफ़ाइल के लिए कोई विशिष्ट योजना नहीं मिली"
+              data-kn="ನಿಮ್ಮ ಪ್ರೊಫೈಲ್‌ಗೆ ನಿರ್ದಿಷ್ಟ ಯೋಜನೆಗಳು ಕಂಡುಬಂದಿಲ್ಲ">
+          No specific schemes found for your profile
+        </span>
+      {% endif %}
+    </h1>
+
+    <!-- Input summary chips -->
+    <div class="result-meta mt-3">
+      <span>🎂 Age: {{ age }}</span>
+      <span>
+        {% if gender == 'female' %}👩{% elif gender == 'male' %}👨{% else %}🧑{% endif %}
+        {{ gender | capitalize }}
+      </span>
+      <span>💰 ₹{{ "{:,}".format(income) }} / year</span>
+    </div>
+  </div>
+</div>
+
+<div class="container py-5">
+
+  {% if eligible %}
+    <h2 class="section-heading">
+      <span data-en="Your Eligible Schemes" data-hi="आपकी पात्र योजनाएं" data-kn="ನಿಮ್ಮ ಅರ್ಹ ಯೋಜನೆಗಳು">Your Eligible Schemes</span>
+    </h2>
+    <div class="section-divider"></div>
+
+    <div class="row g-4 mt-1">
+      {% for s in eligible %}
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="scheme-card h-100">
+          <div class="card-header-strip"></div>
+          <div class="card-body d-flex flex-column">
+
+            <!-- Category badge -->
+            <span class="badge-category mb-2
+              {% if 'Women' in s['category'] %}badge-women
+              {% elif 'Rural' in s['category'] %}badge-rural
+              {% elif 'Child' in s['category'] %}badge-child
+              {% else %}badge-default{% endif %}">
+              {% if 'Women' in s['category'] %}👩{% elif 'Rural' in s['category'] %}📚{% elif 'Child' in s['category'] %}👶{% else %}⭐{% endif %}
+              {{ s['category'] }}
+            </span>
+
+            <div class="scheme-name">{{ s['name'] }}</div>
+
+            <!-- Eligibility summary -->
+            <p style="font-size:0.85rem;color:#4a5568;line-height:1.55;flex:1;margin:0.6rem 0 1rem;">
+              {{ s['eligibility'][:110] }}{% if s['eligibility']|length > 110 %}…{% endif %}
+            </p>
+
+            <!-- Benefits highlight -->
+            <div style="background:#f0f7ff;border-radius:10px;padding:0.7rem 0.9rem;margin-bottom:1rem;">
+              <div style="font-size:0.73rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--primary-light);font-weight:700;margin-bottom:0.3rem;">
+                Key Benefits
+              </div>
+              <div style="font-size:0.83rem;color:#2d3748;">
+                {{ s['benefits'][:100] }}{% if s['benefits']|length > 100 %}…{% endif %}
+              </div>
+            </div>
+
+            <a href="{{ url_for('scheme_detail', scheme_id=s['id']) }}?lang={{ lang }}"
+               class="btn-primary-custom btn text-decoration-none w-100 text-center">
+              <i class="bi bi-eye me-1"></i>
+              <span data-en="View Full Details" data-hi="पूरे विवरण देखें" data-kn="ಸಂಪೂರ್ಣ ವಿವರ ನೋಡಿ">View Full Details</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+  {% else %}
+    <!-- No results -->
+    <div class="no-results-box">
+      <div class="no-icon">🔍</div>
+      <h4 style="color:var(--primary);" data-en="No matching schemes" data-hi="कोई मिलती-जुलती योजना नहीं" data-kn="ಯಾವ ಯೋಜನೆಯೂ ಕಂಡುಬಂದಿಲ್ಲ">No matching schemes</h4>
+      <p style="max-width:420px;margin:0 auto;">
+        Based on your profile, no specific eligibility category matched. Browse all schemes below — you might still find ones to apply for!
+      </p>
+    </div>
+  {% endif %}
+
+  <!-- Action Buttons -->
+  <div class="d-flex gap-3 justify-content-center flex-wrap mt-5">
+    <a href="{{ url_for('eligibility') }}?lang={{ lang }}" class="btn"
+       style="background:#fff;border:2px solid var(--primary);color:var(--primary);border-radius:50px;padding:0.6rem 1.8rem;font-weight:600;">
+      <i class="bi bi-arrow-repeat me-1"></i>
+      <span data-en="Check Again" data-hi="फिर से जांचें" data-kn="ಮತ್ತೆ ಪರಿಶೀಲಿಸಿ">Check Again</span>
+    </a>
+    <a href="{{ url_for('index') }}?lang={{ lang }}" class="btn-primary-custom btn text-decoration-none"
+       style="padding:0.6rem 1.8rem;">
+      <i class="bi bi-house me-1"></i>
+      <span data-en="Browse All Schemes" data-hi="सभी योजनाएं देखें" data-kn="ಎಲ್ಲಾ ಯೋಜನೆಗಳನ್ನು ನೋಡಿ">Browse All Schemes</span>
+    </a>
+  </div>
+
+</div>
+{% endblock %}

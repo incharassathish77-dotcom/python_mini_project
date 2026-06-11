@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results — Government Scheme App{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div style="background:var(--gradient-hero);padding:2.5rem 1rem 2rem;color:#fff;">
+  <div class="container">
+    <h1 style="font-family:'Poppins',sans-serif;font-weight:800;font-size:1.8rem;margin:0 0 0.4rem;">
+      <i class="bi bi-search me-2"></i>
+      <span data-en="Search Results" data-hi="खोज परिणाम" data-kn="ಹುಡುಕಾಟ ಫಲಿತಾಂಶಗಳು">Search Results</span>
+    </h1>
+    {% if query %}
+    <p style="opacity:0.85;margin:0;">
+      <span data-en="Showing results for" data-hi="के लिए परिणाम दिखाए जा रहे हैं" data-kn="ಗಾಗಿ ಫಲಿತಾಂಶಗಳು">Showing results for</span>
+      "<strong>{{ query }}</strong>"
+      — {{ results | length }}
+      <span data-en="scheme(s) found" data-hi="योजना(एं) मिलीं" data-kn="ಯೋಜನೆ(ಗಳು) ಕಂಡುಬಂದಿವೆ">scheme(s) found</span>
+    </p>
+    {% endif %}
+  </div>
+</div>
+
+<div class="container py-5">
+
+  <!-- Search bar again -->
+  <form action="{{ url_for('search') }}" method="GET" class="mb-5">
+    <input type="hidden" name="lang" value="{{ lang }}" />
+    <div class="input-group" style="max-width:600px;margin:0 auto;">
+      <input type="text" name="q" id="searchInput" class="form-control"
+             style="border-radius:50px 0 0 50px;padding:0.75rem 1.2rem;border:2px solid #d1dce8;font-size:0.95rem;"
+             placeholder="Search schemes by name or category…"
+             value="{{ query }}" />
+      <button type="submit" class="btn"
+              style="border-radius:0 50px 50px 0;background:var(--primary);color:#fff;padding:0 1.5rem;font-weight:600;border:none;">
+        <i class="bi bi-search me-1"></i>
+        <span data-en="Search" data-hi="खोजें" data-kn="ಹುಡುಕಿ">Search</span>
+      </button>
+    </div>
+    <!-- Validation message -->
+    <div id="searchError" class="text-center text-danger mt-2" style="display:none;font-size:0.85rem;">
+      ⚠️ Please enter a search keyword.
+    </div>
+  </form>
+
+  <!-- Quick category links -->
+  <div class="d-flex flex-wrap gap-2 justify-content-center mb-5">
+    <a href="{{ url_for('search') }}?q=Women+Welfare&lang={{ lang }}" class="badge-category badge-women text-decoration-none" style="padding:0.45rem 1rem;">👩 Women Welfare</a>
+    <a href="{{ url_for('search') }}?q=Rural+Education&lang={{ lang }}" class="badge-category badge-rural text-decoration-none" style="padding:0.45rem 1rem;">📚 Rural Education</a>
+    <a href="{{ url_for('search') }}?q=Children+Welfare&lang={{ lang }}" class="badge-category badge-child text-decoration-none" style="padding:0.45rem 1rem;">👶 Children Welfare</a>
+  </div>
+
+  {% if results %}
+    <h2 class="section-heading">
+      <span data-en="Matching Schemes" data-hi="मिलती-जुलती योजनाएं" data-kn="ಹೊಂದಾಣಿಕೆಯ ಯೋಜನೆಗಳು">Matching Schemes</span>
+    </h2>
+    <div class="section-divider"></div>
+
+    <!-- Table (desktop) -->
+    <div class="d-none d-md-block schemes-table mb-4">
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th data-en="Scheme Name" data-hi="योजना का नाम" data-kn="ಯೋಜನೆಯ ಹೆಸರು">Scheme Name</th>
+            <th data-en="Category" data-hi="श्रेणी" data-kn="ವಿಭಾಗ">Category</th>
+            <th data-en="Eligibility" data-hi="पात्रता" data-kn="ಅರ್ಹತೆ">Eligibility</th>
+            <th data-en="Action" data-hi="कार्यवाही" data-kn="ಕ್ರಮ">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in results %}
+          <tr>
+            <td style="color:var(--text-muted);font-size:0.82rem;">{{ loop.index }}</td>
+            <td><strong style="color:var(--primary);">{{ s['name'] }}</strong></td>
+            <td>
+              <span class="badge-category
+                {% if 'Women' in s['category'] %}badge-women
+                {% elif 'Rural' in s['category'] %}badge-rural
+                {% elif 'Child' in s['category'] %}badge-child
+                {% else %}badge-default{% endif %}">
+                {{ s['category'] }}
+              </span>
+            </td>
+            <td style="font-size:0.88rem;color:#4a5568;max-width:280px;">
+              {{ s['eligibility'][:90] }}{% if s['eligibility']|length > 90 %}…{% endif %}
+            </td>
+            <td>
+              <a href="{{ url_for('scheme_detail', scheme_id=s['id']) }}?lang={{ lang }}"
+                 class="btn-primary-custom btn text-decoration-none">
+                <i class="bi bi-eye me-1"></i> View Details
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Mobile Cards -->
+    <div class="d-md-none row g-3">
+      {% for s in results %}
+      <div class="col-12">
+        <div class="scheme-card">
+          <div class="card-header-strip"></div>
+          <div class="card-body">
+            <div class="scheme-name">{{ s['name'] }}</div>
+            <span class="badge-category
+              {% if 'Women' in s['category'] %}badge-women
+              {% elif 'Rural' in s['category'] %}badge-rural
+              {% elif 'Child' in s['category'] %}badge-child
+              {% else %}badge-default{% endif %}">
+              {{ s['category'] }}
+            </span>
+            <p class="mt-2 mb-3" style="font-size:0.85rem;color:#4a5568;">
+              {{ s['eligibility'][:100] }}{% if s['eligibility']|length > 100 %}…{% endif %}
+            </p>
+            <a href="{{ url_for('scheme_detail', scheme_id=s['id']) }}?lang={{ lang }}"
+               class="btn-primary-custom btn text-decoration-none w-100 text-center">
+              <i class="bi bi-eye me-1"></i> View Details
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+  {% elif query %}
+    <!-- No results -->
+    <div class="no-results-box">
+      <div class="no-icon">🔍</div>
+      <h4 style="color:var(--primary);" data-en="No schemes found" data-hi="कोई योजना नहीं मिली" data-kn="ಯಾವ ಯೋಜನೆಯೂ ಕಂಡುಬಂದಿಲ್ಲ">No schemes found</h4>
+      <p>Try different keywords like <strong>Women</strong>, <strong>Education</strong>, or <strong>Child</strong>.</p>
+      <a href="{{ url_for('index') }}?lang={{ lang }}" class="btn-primary-custom btn text-decoration-none mt-2">
+        <i class="bi bi-house me-1"></i> Back to Home
+      </a>
+    </div>
+  {% else %}
+    <!-- Empty state (no query yet) -->
+    <div class="no-results-box">
+      <div class="no-icon">📋</div>
+      <h4 style="color:var(--primary);">Enter a keyword to search</h4>
+      <p>Search by scheme name like "Beti Bachao" or by category like "Women Welfare".</p>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Client-side form validation
+  document.querySelector('form').addEventListener('submit', function(e) {
+    const val = document.getElementById('searchInput').value.trim();
+    if (!val) {
+      e.preventDefault();
+      document.getElementById('searchError').style.display = 'block';
+    }
+  });
+</script>
+{% endblock %}

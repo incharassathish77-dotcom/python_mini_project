@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Admin Login — Government Scheme App{% endblock %}
+{% block content %}
+<div style="min-height:80vh;display:flex;align-items:center;justify-content:center;background:#f0f4fa;padding:2rem;">
+  <div style="background:#fff;border-radius:18px;box-shadow:var(--shadow-md);padding:2.5rem;width:100%;max-width:420px;">
+
+    <div class="text-center mb-4">
+      <div style="font-size:2.5rem;margin-bottom:0.5rem;">🔐</div>
+      <h1 style="font-family:'Poppins',sans-serif;font-weight:800;color:var(--primary);font-size:1.6rem;">Admin Login</h1>
+      <p style="color:var(--text-muted);font-size:0.88rem;">Access the admin control panel</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('admin_login') }}" id="adminLoginForm" novalidate>
+      <div class="mb-3">
+        <label class="form-label-custom">Username</label>
+        <input type="text" name="username" id="adminUser" class="form-control-custom"
+               placeholder="admin" required autocomplete="username" />
+      </div>
+      <div class="mb-4">
+        <label class="form-label-custom">Password</label>
+        <div style="position:relative;">
+          <input type="password" name="password" id="adminPass" class="form-control-custom"
+                 placeholder="••••••••" required autocomplete="current-password"
+                 style="padding-right:3rem;" />
+          <button type="button" onclick="togglePwd()" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer;">
+            <i class="bi bi-eye" id="eyeIcon"></i>
+          </button>
+        </div>
+      </div>
+      <button type="submit" class="btn-eligibility w-100 justify-content-center" style="border-radius:12px;">
+        <i class="bi bi-shield-lock me-1"></i> Login to Admin
+      </button>
+    </form>
+
+    <p class="text-center mt-4" style="font-size:0.8rem;color:var(--text-muted);">
+      Default: <code>admin</code> / <code>admin123</code>
+    </p>
+    <div class="text-center mt-2">
+      <a href="{{ url_for('index') }}" style="font-size:0.85rem;color:var(--primary);text-decoration:none;">
+        <i class="bi bi-arrow-left me-1"></i>Back to Home
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+function togglePwd() {
+  const inp = document.getElementById('adminPass');
+  const icon = document.getElementById('eyeIcon');
+  if (inp.type === 'password') {
+    inp.type = 'text'; icon.className = 'bi bi-eye-slash';
+  } else {
+    inp.type = 'password'; icon.className = 'bi bi-eye';
+  }
+}
+</script>
+{% endblock %}

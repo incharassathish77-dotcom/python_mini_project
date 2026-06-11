@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}Eligibility Checker — Government Scheme App{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div style="background:var(--gradient-hero);padding:3rem 1rem 2.5rem;color:#fff;text-align:center;">
+  <div class="container">
+    <div style="font-size:3rem;margin-bottom:0.8rem;">✅</div>
+    <h1 style="font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(1.6rem,3.5vw,2.2rem);">
+      <span data-en="Eligibility Checker" data-hi="पात्रता जांचकर्ता" data-kn="ಅರ್ಹತೆ ಪರೀಕ್ಷಕ">Eligibility Checker</span>
+    </h1>
+    <p style="opacity:0.85;max-width:480px;margin:0.5rem auto 0;font-size:1rem;">
+      <span data-en="Answer 3 simple questions to discover schemes you qualify for."
+            data-hi="3 सरल प्रश्नों के उत्तर दें और योजनाएं खोजें।"
+            data-kn="3 ಸರಳ ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸಿ ಮತ್ತು ಯೋಜನೆಗಳನ್ನು ಕಂಡುಹಿಡಿಯಿರಿ.">
+        Answer 3 simple questions to discover schemes you qualify for.
+      </span>
+    </p>
+  </div>
+</div>
+
+<div class="container py-5">
+  <div class="eligibility-card">
+
+    <!-- Progress Dots -->
+    <div class="d-flex justify-content-center gap-2 mb-4">
+      <span style="width:10px;height:10px;border-radius:50%;background:var(--primary);display:inline-block;"></span>
+      <span style="width:10px;height:10px;border-radius:50%;background:var(--primary);display:inline-block;"></span>
+      <span style="width:10px;height:10px;border-radius:50%;background:var(--primary);display:inline-block;"></span>
+    </div>
+
+    <h2 style="font-family:'Poppins',sans-serif;font-weight:700;color:var(--primary);font-size:1.3rem;text-align:center;margin-bottom:0.3rem;">
+      <span data-en="Tell us about yourself" data-hi="अपने बारे में बताएं" data-kn="ನಿಮ್ಮ ಬಗ್ಗೆ ಹೇಳಿ">Tell us about yourself</span>
+    </h2>
+    <p class="text-center mb-4" style="font-size:0.88rem;color:var(--text-muted);">
+      <span data-en="All fields are required" data-hi="सभी फ़ील्ड आवश्यक हैं" data-kn="ಎಲ್ಲಾ ಕ್ಷೇತ್ರಗಳು ಅಗತ್ಯವಿದೆ">All fields are required</span>
+    </p>
+
+    <form action="{{ url_for('eligibility') }}?lang={{ lang }}" method="POST" id="eligibilityForm" novalidate>
+
+      <!-- Age -->
+      <div class="mb-4">
+        <label for="age" class="form-label-custom">
+          <i class="bi bi-person-badge me-1"></i>
+          <span data-en="Your Age" data-hi="आपकी आयु" data-kn="ನಿಮ್ಮ ವಯಸ್ಸು">Your Age</span>
+          <span style="color:var(--danger);">*</span>
+        </label>
+        <input type="number" id="age" name="age" class="form-control-custom"
+               placeholder="e.g. 25" min="0" max="120" required />
+        <div class="invalid-msg" id="ageError" style="color:var(--danger);font-size:0.8rem;margin-top:4px;display:none;">
+          ⚠️ Please enter a valid age (0–120).
+        </div>
+        <div style="font-size:0.78rem;color:var(--text-muted);margin-top:5px;">
+          <span data-en="Children (under 18) qualify for Children Welfare schemes."
+                data-hi="बच्चे (18 से कम) बाल कल्याण योजनाओं के लिए पात्र हैं।"
+                data-kn="ಮಕ್ಕಳು (18 ವರ್ಷದ ಒಳಗೆ) ಮಕ್ಕಳ ಕಲ್ಯಾಣ ಯೋಜನೆಗಳಿಗೆ ಅರ್ಹರಾಗಿರುತ್ತಾರೆ.">
+            Children (under 18) qualify for Children Welfare schemes.
+          </span>
+        </div>
+      </div>
+
+      <!-- Gender -->
+      <div class="mb-4">
+        <label class="form-label-custom">
+          <i class="bi bi-gender-ambiguous me-1"></i>
+          <span data-en="Gender" data-hi="लिंग" data-kn="ಲಿಂಗ">Gender</span>
+          <span style="color:var(--danger);">*</span>
+        </label>
+        <div class="d-flex gap-3 mt-2">
+          {% for val, en, hi, kn in [('male','Male','पुरुष','ಪುರುಷ'), ('female','Female','महिला','ಮಹಿಳೆ'), ('other','Other','अन्य','ಇತರ')] %}
+          <label class="gender-option" style="flex:1;cursor:pointer;">
+            <input type="radio" name="gender" value="{{ val }}" class="d-none gender-radio" required />
+            <div class="gender-box text-center py-3 px-2 border rounded" style="border-radius:12px !important;border:2px solid #d1dce8 !important;transition:all 0.2s;background:#fafbfd;">
+              <div style="font-size:1.5rem;">{{ '👨' if val=='male' else ('👩' if val=='female' else '🧑') }}</div>
+              <div style="font-size:0.85rem;font-weight:600;color:var(--primary);margin-top:4px;"
+                   data-en="{{ en }}" data-hi="{{ hi }}" data-kn="{{ kn }}">{{ en }}</div>
+            </div>
+          </label>
+          {% endfor %}
+        </div>
+        <div id="genderError" style="color:var(--danger);font-size:0.8rem;margin-top:4px;display:none;">
+          ⚠️ Please select your gender.
+        </div>
+        <div style="font-size:0.78rem;color:var(--text-muted);margin-top:5px;">
+          <span data-en="Female users qualify for Women Welfare schemes."
+                data-hi="महिलाएं महिला कल्याण योजनाओं के लिए पात्र हैं।"
+                data-kn="ಮಹಿಳೆಯರು ಮಹಿಳಾ ಕಲ್ಯಾಣ ಯೋಜನೆಗಳಿಗೆ ಅರ್ಹರಾಗಿರುತ್ತಾರೆ.">
+            Female users qualify for Women Welfare schemes.
+          </span>
+        </div>
+      </div>
+
+      <!-- Annual Income -->
+      <div class="mb-5">
+        <label for="income" class="form-label-custom">
+          <i class="bi bi-currency-rupee me-1"></i>
+          <span data-en="Annual Family Income (₹)" data-hi="वार्षिक पारिवारिक आय (₹)" data-kn="ವಾರ್ಷಿಕ ಕುಟುಂಬ ಆದಾಯ (₹)">Annual Family Income (₹)</span>
+          <span style="color:var(--danger);">*</span>
+        </label>
+        <input type="number" id="income" name="income" class="form-control-custom"
+               placeholder="e.g. 150000" min="0" required />
+        <div id="incomeError" style="color:var(--danger);font-size:0.8rem;margin-top:4px;display:none;">
+          ⚠️ Please enter a valid income amount.
+        </div>
+        <!-- Income range slider -->
+        <input type="range" id="incomeSlider" min="0" max="1000000" step="10000"
+               style="width:100%;margin-top:10px;accent-color:var(--primary);" />
+        <div class="d-flex justify-content-between" style="font-size:0.75rem;color:var(--text-muted);">
+          <span>₹0</span><span>₹5 Lakh</span><span>₹10 Lakh</span>
+        </div>
+        <div style="font-size:0.78rem;color:var(--text-muted);margin-top:5px;">
+          <span data-en="Income below ₹2,50,000 qualifies for Rural Education schemes."
+                data-hi="₹2,50,000 से कम आय ग्रामीण शिक्षा योजनाओं के लिए पात्र है।"
+                data-kn="₹2,50,000 ಕ್ಕಿಂತ ಕಡಿಮೆ ಆದಾಯ ಗ್ರಾಮೀಣ ಶಿಕ್ಷಣ ಯೋಜನೆಗಳಿಗೆ ಅರ್ಹವಾಗಿದೆ.">
+            Income below ₹2,50,000 qualifies for Rural Education schemes.
+          </span>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn-eligibility w-100 justify-content-center" style="border-radius:12px;">
+        <i class="bi bi-search me-1"></i>
+        <span data-en="Find My Eligible Schemes" data-hi="मेरी पात्र योजनाएं खोजें" data-kn="ನನ್ನ ಅರ್ಹ ಯೋಜನೆಗಳನ್ನು ಹುಡುಕಿ">Find My Eligible Schemes</span>
+      </button>
+
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Gender card visual selection
+  document.querySelectorAll('.gender-radio').forEach(radio => {
+    radio.addEventListener('change', () => {
+      document.querySelectorAll('.gender-box').forEach(b => {
+        b.style.borderColor = '#d1dce8';
+        b.style.background  = '#fafbfd';
+      });
+      const box = radio.nextElementSibling;
+      box.style.borderColor = 'var(--primary)';
+      box.style.background  = '#eef2ff';
+    });
+  });
+
+  // Income slider ↔ input sync
+  const slider = document.getElementById('incomeSlider');
+  const incInput = document.getElementById('income');
+  slider.addEventListener('input', () => { incInput.value = slider.value; });
+  incInput.addEventListener('input', () => { slider.value = incInput.value; });
+
+  // Form validation
+  document.getElementById('eligibilityForm').addEventListener('submit', function(e) {
+    let valid = true;
+
+    const age = parseInt(document.getElementById('age').value);
+    const ageErr = document.getElementById('ageError');
+    if (isNaN(age) || age < 0 || age > 120) {
+      ageErr.style.display = 'block'; valid = false;
+    } else { ageErr.style.display = 'none'; }
+
+    const gender = document.querySelector('input[name="gender"]:checked');
+    const gErr = document.getElementById('genderError');
+    if (!gender) { gErr.style.display = 'block'; valid = false; }
+    else { gErr.style.display = 'none'; }
+
+    const income = parseInt(document.getElementById('income').value);
+    const iErr = document.getElementById('incomeError');
+    if (isNaN(income) || income < 0) {
+      iErr.style.display = 'block'; valid = false;
+    } else { iErr.style.display = 'none'; }
+
+    if (!valid) e.preventDefault();
+  });
+</script>
+{% endblock %}

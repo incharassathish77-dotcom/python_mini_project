@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}{{ scheme['name'] }} — Government Scheme App{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+  <!-- Back link -->
+  <a href="{{ url_for('index') }}?lang={{ lang }}"
+     style="display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-weight:600;text-decoration:none;font-size:0.9rem;margin-bottom:1.5rem;">
+    <i class="bi bi-arrow-left-circle-fill"></i>
+    <span data-en="Back to All Schemes" data-hi="सभी योजनाओं पर वापस जाएं" data-kn="ಎಲ್ಲಾ ಯೋಜನೆಗಳಿಗೆ ಹಿಂತಿರುಗಿ">Back to All Schemes</span>
+  </a>
+
+  <div class="detail-card">
+
+    <!-- ── Header ─────────────────────────────────────────── -->
+    <div class="detail-header">
+      <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+        <div>
+          <span class="badge-category mb-3
+            {% if 'Women' in scheme['category'] %}badge-women
+            {% elif 'Rural' in scheme['category'] %}badge-rural
+            {% elif 'Child' in scheme['category'] %}badge-child
+            {% else %}badge-default{% endif %}"
+            style="background:rgba(255,255,255,0.2);color:#fff;border:1.5px solid rgba(255,255,255,0.35);">
+            {% if 'Women' in scheme['category'] %}👩{% elif 'Rural' in scheme['category'] %}📚{% elif 'Child' in scheme['category'] %}👶{% else %}⭐{% endif %}
+            {{ scheme['category'] }}
+          </span>
+          <h1 class="mt-1">{{ scheme['name'] }}</h1>
+        </div>
+        <a href="{{ scheme['website'] }}" target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);
+                  border:1.5px solid rgba(255,255,255,0.4);border-radius:50px;
+                  padding:0.5rem 1.2rem;color:#fff;text-decoration:none;font-weight:600;font-size:0.88rem;
+                  backdrop-filter:blur(8px);white-space:nowrap;transition:background 0.2s;"
+           onmouseover="this.style.background='rgba(255,255,255,0.25)'"
+           onmouseout="this.style.background='rgba(255,255,255,0.15)'">
+          <i class="bi bi-globe2"></i>
+          <span data-en="Official Website" data-hi="आधिकारिक वेबसाइट" data-kn="ಅಧಿಕೃತ ವೆಬ್‌ಸೈಟ್">Official Website</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ── Eligibility ────────────────────────────────────── -->
+    <div class="detail-section">
+      <div class="detail-section-title">
+        <div class="icon-circle">✅</div>
+        <span data-en="Eligibility Criteria" data-hi="पात्रता मानदंड" data-kn="ಅರ್ಹತೆಯ ಮಾನದಂಡಗಳು">Eligibility Criteria</span>
+      </div>
+      <p style="color:#3a4a6b;line-height:1.75;font-size:0.95rem;margin:0;">
+        {{ scheme['eligibility'] }}
+      </p>
+    </div>
+
+    <!-- ── Benefits ───────────────────────────────────────── -->
+    <div class="detail-section" style="background:#f8fbff;">
+      <div class="detail-section-title">
+        <div class="icon-circle">🎁</div>
+        <span data-en="Benefits" data-hi="लाभ" data-kn="ಪ್ರಯೋಜನಗಳು">Benefits</span>
+      </div>
+      <p style="color:#3a4a6b;line-height:1.75;font-size:0.95rem;margin:0;">
+        {{ scheme['benefits'] }}
+      </p>
+    </div>
+
+    <!-- ── Required Documents ─────────────────────────────── -->
+    <div class="detail-section">
+      <div class="detail-section-title">
+        <div class="icon-circle">📄</div>
+        <span data-en="Required Documents" data-hi="आवश्यक दस्तावेज़" data-kn="ಅಗತ್ಯ ದಾಖಲೆಗಳು">Required Documents</span>
+      </div>
+      <div class="d-flex flex-wrap">
+        {% for doc in documents %}
+        <span class="doc-chip">
+          <i class="bi bi-file-earmark-check" style="color:var(--primary-light);"></i>
+          {{ doc }}
+        </span>
+        {% endfor %}
+      </div>
+      <div class="mt-3 p-3 rounded" style="background:#fff8e1;border-left:4px solid var(--accent);font-size:0.85rem;color:#5d4037;">
+        <i class="bi bi-info-circle me-2" style="color:var(--accent);"></i>
+        <strong>Note:</strong> Ensure all documents are self-attested and carry originals for verification.
+      </div>
+    </div>
+
+    <!-- ── Application Procedure ──────────────────────────── -->
+    <div class="detail-section" style="background:#f8fbff;">
+      <div class="detail-section-title">
+        <div class="icon-circle">🚀</div>
+        <span data-en="Application Procedure" data-hi="आवेदन प्रक्रिया" data-kn="ಅರ್ಜಿ ಪ್ರಕ್ರಿಯೆ">Application Procedure</span>
+      </div>
+      {% for step in procedure %}
+      <div class="procedure-step">
+        <div class="step-number">{{ loop.index }}</div>
+        <div class="step-text">{{ step }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- ── Official Link ───────────────────────────────────── -->
+    <div class="detail-section text-center" style="padding:2rem;">
+      <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:1rem;">
+        <span data-en="For official and latest information, visit the government portal:"
+              data-hi="आधिकारिक और नवीनतम जानकारी के लिए सरकारी पोर्टल पर जाएं:"
+              data-kn="ಅಧಿಕೃತ ಮತ್ತು ಇತ್ತೀಚಿನ ಮಾಹಿತಿಗಾಗಿ ಸರ್ಕಾರಿ ಪೋರ್ಟಲ್ ಗೆ ಭೇಟಿ ನೀಡಿ:">
+          For official and latest information, visit the government portal:
+        </span>
+      </p>
+      <a href="{{ scheme['website'] }}" target="_blank" rel="noopener"
+         class="btn-eligibility text-decoration-none" style="display:inline-flex;">
+        <i class="bi bi-globe2"></i>
+        <span data-en="Visit Official Portal" data-hi="आधिकारिक पोर्टल पर जाएं" data-kn="ಅಧಿಕೃತ ಪೋರ್ಟಲ್ ಗೆ ಭೇಟಿ ನೀಡಿ">Visit Official Portal</span>
+        <i class="bi bi-arrow-up-right"></i>
+      </a>
+    </div>
+
+  </div><!-- /detail-card -->
+
+  <!-- Related action -->
+  <div class="text-center mt-4">
+    <a href="{{ url_for('eligibility') }}?lang={{ lang }}" class="btn"
+       style="border:2px solid var(--primary);color:var(--primary);border-radius:50px;padding:0.6rem 2rem;font-weight:600;text-decoration:none;">
+      <i class="bi bi-check2-shield me-1"></i>
+      <span data-en="Check Eligibility for More Schemes" data-hi="अधिक योजनाओं के लिए पात्रता जांचें" data-kn="ಹೆಚ್ಚಿನ ಯೋಜನೆಗಳಿಗೆ ಅರ್ಹತೆ ಪರಿಶೀಲಿಸಿ">Check Eligibility for More Schemes</span>
+    </a>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block title %}{% if scheme is defined %}Edit Scheme{% else %}Add Scheme{% endif %} — Admin{% endblock %}
+
+{% block content %}
+<div class="container py-5" style="max-width:720px;">
+
+  <a href="{{ url_for('admin_dashboard') }}"
+     style="display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-weight:600;text-decoration:none;font-size:0.9rem;margin-bottom:1.5rem;">
+    <i class="bi bi-arrow-left-circle-fill"></i> Back to Dashboard
+  </a>
+
+  <div style="background:#fff;border-radius:18px;box-shadow:var(--shadow-md);padding:2.5rem;border:1.5px solid #e8edf5;">
+
+    <h1 style="font-family:'Poppins',sans-serif;font-weight:800;color:var(--primary);font-size:1.6rem;margin-bottom:0.3rem;">
+      {% if scheme is defined %}✏️ Edit Scheme{% else %}➕ Add New Scheme{% endif %}
+    </h1>
+    <div class="section-divider"></div>
+
+    <form method="POST"
+          action="{% if scheme is defined %}{{ url_for('admin_edit', scheme_id=scheme['id']) }}{% else %}{{ url_for('admin_add') }}{% endif %}"
+          id="schemeForm" novalidate>
+
+      <!-- Name -->
+      <div class="mb-3">
+        <label class="form-label-custom">Scheme Name <span style="color:var(--danger);">*</span></label>
+        <input type="text" name="name" class="form-control-custom"
+               value="{% if scheme is defined %}{{ scheme['name'] }}{% endif %}"
+               placeholder="e.g. Pradhan Mantri Awas Yojana" required />
+      </div>
+
+      <!-- Category -->
+      <div class="mb-3">
+        <label class="form-label-custom">Category <span style="color:var(--danger);">*</span></label>
+        <select name="category" class="form-select-custom" required>
+          <option value="">-- Select Category --</option>
+          {% for cat in ['Women Welfare', 'Rural Education', 'Children Welfare', 'Agriculture', 'Health', 'Housing', 'Other'] %}
+          <option value="{{ cat }}"
+            {% if scheme is defined and scheme['category'] == cat %}selected{% endif %}>
+            {{ cat }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Eligibility -->
+      <div class="mb-3">
+        <label class="form-label-custom">Eligibility Criteria <span style="color:var(--danger);">*</span></label>
+        <textarea name="eligibility" class="form-control-custom" rows="3"
+                  placeholder="Describe who can apply for this scheme…" required>{% if scheme is defined %}{{ scheme['eligibility'] }}{% endif %}</textarea>
+      </div>
+
+      <!-- Benefits -->
+      <div class="mb-3">
+        <label class="form-label-custom">Benefits <span style="color:var(--danger);">*</span></label>
+        <textarea name="benefits" class="form-control-custom" rows="3"
+                  placeholder="Describe the benefits provided…" required>{% if scheme is defined %}{{ scheme['benefits'] }}{% endif %}</textarea>
+      </div>
+
+      <!-- Documents -->
+      <div class="mb-3">
+        <label class="form-label-custom">
+          Required Documents <span style="color:var(--danger);">*</span>
+          <small style="font-weight:400;color:var(--text-muted);">(separate with |)</small>
+        </label>
+        <textarea name="documents" class="form-control-custom" rows="2"
+                  placeholder="Aadhaar Card|Income Certificate|Bank Passbook" required>{% if scheme is defined %}{{ scheme['documents'] }}{% endif %}</textarea>
+      </div>
+
+      <!-- Procedure -->
+      <div class="mb-3">
+        <label class="form-label-custom">
+          Application Procedure <span style="color:var(--danger);">*</span>
+          <small style="font-weight:400;color:var(--text-muted);">(separate steps with |)</small>
+        </label>
+        <textarea name="procedure" class="form-control-custom" rows="3"
+                  placeholder="Step 1: Check eligibility|Step 2: Collect documents|…" required>{% if scheme is defined %}{{ scheme['procedure'] }}{% endif %}</textarea>
+      </div>
+
+      <!-- Website -->
+      <div class="mb-4">
+        <label class="form-label-custom">Official Website URL <span style="color:var(--danger);">*</span></label>
+        <input type="url" name="website" class="form-control-custom"
+               value="{% if scheme is defined %}{{ scheme['website'] }}{% endif %}"
+               placeholder="https://example.gov.in" required />
+      </div>
+
+      <!-- Error messages area -->
+      <div id="formErrors" style="display:none;background:#fce4ec;border-radius:10px;padding:0.8rem 1rem;font-size:0.85rem;color:var(--danger);margin-bottom:1rem;"></div>
+
+      <!-- Submit -->
+      <div class="d-flex gap-3">
+        <button type="submit" class="btn-eligibility" style="border-radius:12px;">
+          <i class="bi bi-{% if scheme is defined %}check-lg{% else %}plus-circle{% endif %} me-1"></i>
+          {% if scheme is defined %}Update Scheme{% else %}Add Scheme{% endif %}
+        </button>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn"
+           style="border:2px solid #ccc;color:var(--text-muted);border-radius:12px;padding:0.65rem 1.5rem;font-weight:600;text-decoration:none;">
+          Cancel
+        </a>
+      </div>
+
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Client-side validation
+  document.getElementById('schemeForm').addEventListener('submit', function(e) {
+    const fields = ['name','category','eligibility','benefits','documents','procedure','website'];
+    const errors = [];
+    fields.forEach(f => {
+      const el = document.querySelector(`[name="${f}"]`);
+      if (!el || !el.value.trim()) errors.push(`"${f}" is required.`);
+    });
+    if (errors.length) {
+      e.preventDefault();
+      const box = document.getElementById('formErrors');
+      box.style.display = 'block';
+      box.innerHTML = '⚠️ ' + errors.join('<br>⚠️ ');
+      box.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+</script>
+{% endblock %}

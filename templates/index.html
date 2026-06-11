@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block title %}Home — Government Scheme Awareness App{% endblock %}
+
+{% block content %}
+
+<!-- ── Hero ──────────────────────────────────────────────────── -->
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-badge">🇮🇳 Official Government Portal</div>
+
+    <h1 class="hero-title">
+      <span data-en="Discover" data-hi="खोजें" data-kn="ಕಂಡುಹಿಡಿಯಿರಿ">Discover</span>
+      <span>
+        <span data-en="Government" data-hi="सरकारी" data-kn="ಸರ್ಕಾರಿ">Government</span>
+        <span style="color:var(--accent);">
+          <span data-en="Schemes" data-hi="योजनाएं" data-kn="ಯೋಜನೆಗಳು">Schemes</span>
+        </span>
+      </span>
+      <br/>
+      <span data-en="Made for You" data-hi="आपके लिए बनाई गई" data-kn="ನಿಮಗಾಗಿ ರೂಪಿಸಲಾಗಿದೆ">Made for You</span>
+    </h1>
+
+    <p class="hero-subtitle" data-en="Find, check eligibility and apply for government welfare schemes across education, women welfare, children and rural development."
+       data-hi="शिक्षा, महिला कल्याण, बच्चों और ग्रामीण विकास में सरकारी योजनाओं को खोजें, पात्रता जांचें और आवेदन करें।"
+       data-kn="ಶಿಕ್ಷಣ, ಮಹಿಳಾ ಕಲ್ಯಾಣ, ಮಕ್ಕಳು ಮತ್ತು ಗ್ರಾಮೀಣ ಅಭಿವೃದ್ಧಿಯಲ್ಲಿ ಸರ್ಕಾರಿ ಯೋಜನೆಗಳನ್ನು ಕಂಡುಹಿಡಿಯಿರಿ.">
+      Find, check eligibility and apply for government welfare schemes across education, women welfare, children and rural development.
+    </p>
+
+    <!-- Search -->
+    <form action="{{ url_for('search') }}" method="GET" class="search-wrapper mb-4" id="heroSearchForm">
+      <input type="hidden" name="lang" value="{{ lang }}" />
+      <input type="text" name="q" id="heroSearch" class="form-control"
+             placeholder="Search by scheme name or category…"
+             data-en-placeholder="Search by scheme name or category…"
+             data-hi-placeholder="योजना का नाम या श्रेणी खोजें…"
+             data-kn-placeholder="ಯೋಜನೆಯ ಹೆಸರು ಅಥವಾ ವರ್ಗ ಹುಡುಕಿ…"
+             autocomplete="off" />
+      <button type="submit" class="search-btn">
+        <i class="bi bi-search"></i>
+        <span data-en="Search" data-hi="खोजें" data-kn="ಹುಡುಕಿ">Search</span>
+      </button>
+    </form>
+
+    <!-- Quick CTA -->
+    <a href="{{ url_for('eligibility') }}?lang={{ lang }}" class="btn-eligibility">
+      <i class="bi bi-check2-shield"></i>
+      <span data-en="Check Your Eligibility" data-hi="पात्रता जांचें" data-kn="ಅರ್ಹತೆ ಪರಿಶೀಲಿಸಿ">Check Your Eligibility</span>
+    </a>
+  </div>
+</section>
+
+<!-- ── Stats Bar ──────────────────────────────────────────────── -->
+<section class="stats-bar">
+  <div class="container">
+    <div class="row g-0 text-center">
+      <div class="col-6 col-md-3 stat-item">
+        <div class="stat-number">{{ schemes | length }}+</div>
+        <div class="stat-label" data-en="Schemes Listed" data-hi="योजनाएं" data-kn="ಯೋಜನೆಗಳು">Schemes Listed</div>
+      </div>
+      <div class="col-6 col-md-3 stat-item">
+        <div class="stat-number">3</div>
+        <div class="stat-label" data-en="Categories" data-hi="श्रेणियां" data-kn="ವಿಭಾಗಗಳು">Categories</div>
+      </div>
+      <div class="col-6 col-md-3 stat-item">
+        <div class="stat-number">3</div>
+        <div class="stat-label" data-en="Languages" data-hi="भाषाएं" data-kn="ಭಾಷೆಗಳು">Languages</div>
+      </div>
+      <div class="col-6 col-md-3 stat-item">
+        <div class="stat-number">100%</div>
+        <div class="stat-label" data-en="Free to Use" data-hi="मुफ्त" data-kn="ಉಚಿತ">Free to Use</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Category Quick Links ───────────────────────────────────── -->
+<section class="py-4" style="background:#fff;border-bottom:1px solid #e8edf5;">
+  <div class="container">
+    <div class="d-flex flex-wrap gap-2 justify-content-center">
+      <a href="{{ url_for('search') }}?q=Women+Welfare&lang={{ lang }}" class="badge-category badge-women text-decoration-none" style="padding:0.5rem 1.2rem;font-size:0.88rem;">
+        👩 <span data-en="Women Welfare" data-hi="महिला कल्याण" data-kn="ಮಹಿಳಾ ಕಲ್ಯಾಣ">Women Welfare</span>
+      </a>
+      <a href="{{ url_for('search') }}?q=Rural+Education&lang={{ lang }}" class="badge-category badge-rural text-decoration-none" style="padding:0.5rem 1.2rem;font-size:0.88rem;">
+        📚 <span data-en="Rural Education" data-hi="ग्रामीण शिक्षा" data-kn="ಗ್ರಾಮೀಣ ಶಿಕ್ಷಣ">Rural Education</span>
+      </a>
+      <a href="{{ url_for('search') }}?q=Children+Welfare&lang={{ lang }}" class="badge-category badge-child text-decoration-none" style="padding:0.5rem 1.2rem;font-size:0.88rem;">
+        👶 <span data-en="Children Welfare" data-hi="बाल कल्याण" data-kn="ಮಕ್ಕಳ ಕಲ್ಯಾಣ">Children Welfare</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── All Schemes Table ──────────────────────────────────────── -->
+<section class="py-5">
+  <div class="container-xl">
+    <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap gap-2">
+      <div>
+        <h2 class="section-heading">
+          <span data-en="All Government Schemes" data-hi="सभी सरकारी योजनाएं" data-kn="ಎಲ್ಲಾ ಸರ್ಕಾರಿ ಯೋಜನೆಗಳು">All Government Schemes</span>
+        </h2>
+        <div class="section-divider"></div>
+      </div>
+      <a href="{{ url_for('eligibility') }}?lang={{ lang }}" class="btn-eligibility" style="font-size:0.9rem;padding:0.5rem 1.4rem;">
+        <i class="bi bi-check2-circle"></i>
+        <span data-en="Eligibility Checker" data-hi="पात्रता जांचें" data-kn="ಅರ್ಹತೆ ಪರೀಕ್ಷಕ">Eligibility Checker</span>
+      </a>
+    </div>
+
+    <!-- Desktop Table -->
+    <div class="d-none d-md-block schemes-table">
+      <table class="table mb-0" id="schemesTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th data-en="Scheme Name" data-hi="योजना का नाम" data-kn="ಯೋಜನೆಯ ಹೆಸರು">Scheme Name</th>
+            <th data-en="Category" data-hi="श्रेणी" data-kn="ವಿಭಾಗ">Category</th>
+            <th data-en="Eligibility (Summary)" data-hi="पात्रता" data-kn="ಅರ್ಹತೆ">Eligibility (Summary)</th>
+            <th data-en="Action" data-hi="कार्यवाही" data-kn="ಕ್ರಮ">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in schemes %}
+          <tr>
+            <td style="color:var(--text-muted);font-size:0.82rem;">{{ loop.index }}</td>
+            <td>
+              <strong style="color:var(--primary);font-size:0.95rem;">{{ s['name'] }}</strong>
+            </td>
+            <td>
+              <span class="badge-category
+                {% if 'Women' in s['category'] %}badge-women
+                {% elif 'Rural' in s['category'] or 'Education' in s['category'] %}badge-rural
+                {% elif 'Child' in s['category'] %}badge-child
+                {% else %}badge-default{% endif %}">
+                {{ s['category'] }}
+              </span>
+            </td>
+            <td style="max-width:300px;font-size:0.88rem;color:#4a5568;">
+              {{ s['eligibility'][:90] }}{% if s['eligibility']|length > 90 %}…{% endif %}
+            </td>
+            <td>
+              <a href="{{ url_for('scheme_detail', scheme_id=s['id']) }}?lang={{ lang }}"
+                 class="btn-primary-custom btn text-decoration-none">
+                <i class="bi bi-eye me-1"></i>
+                <span data-en="View Details" data-hi="विवरण देखें" data-kn="ವಿವರ ನೋಡಿ">View Details</span>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Mobile Cards -->
+    <div class="d-md-none row g-3">
+      {% for s in schemes %}
+      <div class="col-12">
+        <div class="scheme-card">
+          <div class="card-header-strip"></div>
+          <div class="card-body">
+            <div class="scheme-name">{{ s['name'] }}</div>
+            <span class="badge-category
+              {% if 'Women' in s['category'] %}badge-women
+              {% elif 'Rural' in s['category'] %}badge-rural
+              {% elif 'Child' in s['category'] %}badge-child
+              {% else %}badge-default{% endif %}">
+              {{ s['category'] }}
+            </span>
+            <p class="mt-2 mb-3" style="font-size:0.85rem;color:#4a5568;">
+              {{ s['eligibility'][:100] }}{% if s['eligibility']|length > 100 %}…{% endif %}
+            </p>
+            <a href="{{ url_for('scheme_detail', scheme_id=s['id']) }}?lang={{ lang }}"
+               class="btn-primary-custom btn text-decoration-none w-100 text-center">
+              <i class="bi bi-eye me-1"></i> View Details
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if not schemes %}
+    <div class="no-results-box">
+      <div class="no-icon">📋</div>
+      <h5>No schemes available.</h5>
+      <p>Check back later or contact the administrator.</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- ── How It Works ───────────────────────────────────────────── -->
+<section class="py-5" style="background:#fff;">
+  <div class="container">
+    <h2 class="section-heading text-center" data-en="How It Works" data-hi="यह कैसे काम करता है" data-kn="ಇದು ಹೇಗೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತದೆ">How It Works</h2>
+    <div class="section-divider mx-auto"></div>
+    <div class="row g-4 mt-2">
+      {% set steps = [
+        ('🔍', 'Search Schemes', 'Browse or search government schemes by name or category.', 'ಯೋಜನೆಗಳನ್ನು ಹುಡುಕಿ', 'योजनाएं खोजें'),
+        ('✅', 'Check Eligibility', 'Use our checker to find schemes you qualify for based on age, gender and income.', 'ಅರ್ಹತೆ ಪರಿಶೀಲಿಸಿ', 'पात्रता जांचें'),
+        ('📄', 'Gather Documents', 'See the exact documents required for each scheme.', 'ದಾಖಲೆಗಳನ್ನು ಸಂಗ್ರಹಿಸಿ', 'दस्तावेज़ जुटाएं'),
+        ('🚀', 'Apply & Track', 'Follow the step-by-step procedure to apply and track your application.', 'ಅರ್ಜಿ ಸಲ್ಲಿಸಿ ಮತ್ತು ಟ್ರ್ಯಾಕ್ ಮಾಡಿ', 'आवेदन करें और ट्रैक करें')
+      ] %}
+      {% for icon, title_en, desc, title_kn, title_hi in steps %}
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="text-center p-3">
+          <div style="font-size:2.8rem;margin-bottom:1rem;">{{ icon }}</div>
+          <h5 style="font-family:'Poppins',sans-serif;font-weight:700;color:var(--primary);"
+              data-en="{{ title_en }}" data-hi="{{ title_hi }}" data-kn="{{ title_kn }}">{{ title_en }}</h5>
+          <p style="font-size:0.88rem;color:var(--text-muted);line-height:1.6;">{{ desc }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Update placeholder text based on selected language
+  const lang = "{{ lang }}";
+  const inp = document.getElementById('heroSearch');
+  if (inp && inp.dataset[lang + 'Placeholder']) {
+    inp.placeholder = inp.dataset[lang + 'Placeholder'];
+  }
+</script>
+{% endblock %}

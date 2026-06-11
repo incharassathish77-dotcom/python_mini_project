@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="{{ lang | default('en') }}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Government Scheme Awareness App – Discover, check eligibility, and apply for government welfare schemes." />
+  <title>{% block title %}Government Scheme Awareness App{% endblock %}</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- Custom CSS -->
+  <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ── Navigation Bar ──────────────────────────────────────── -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container-xl">
+
+    <!-- Brand -->
+    <a class="navbar-brand" href="{{ url_for('index') }}?lang={{ lang }}">
+      <span class="brand-icon">🏛️</span>
+      <span>
+        <span data-en="GovtScheme" data-hi="सरकारी योजना" data-kn="ಸರ್ಕಾರಿ ಯೋಜನೆ">GovtScheme</span>
+        <small style="font-size:0.65rem;opacity:0.8;display:block;margin-top:-4px;font-weight:400;">Awareness Portal</small>
+      </span>
+    </a>
+
+    <!-- Toggler -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" style="border-color:rgba(255,255,255,0.4);">
+      <span class="navbar-toggler-icon" style="filter:invert(1);"></span>
+    </button>
+
+    <!-- Links -->
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav me-auto ms-3 gap-1">
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}"
+             href="{{ url_for('index') }}?lang={{ lang }}">
+            <i class="bi bi-house-door me-1"></i>
+            <span data-en="Home" data-hi="होम" data-kn="ಮನೆ">Home</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'search' %}active{% endif %}"
+             href="{{ url_for('search') }}?lang={{ lang }}">
+            <i class="bi bi-search me-1"></i>
+            <span data-en="Search" data-hi="खोजें" data-kn="ಹುಡುಕಿ">Search</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.endpoint == 'eligibility' %}active{% endif %}"
+             href="{{ url_for('eligibility') }}?lang={{ lang }}">
+            <i class="bi bi-check2-circle me-1"></i>
+            <span data-en="Eligibility" data-hi="पात्रता" data-kn="ಅರ್ಹತೆ">Eligibility</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if 'admin' in request.endpoint %}active{% endif %}"
+             href="{{ url_for('admin_login') }}">
+            <i class="bi bi-shield-lock me-1"></i>
+            <span data-en="Admin" data-hi="एडमिन" data-kn="ನಿರ್ವಾಹಕ">Admin</span>
+          </a>
+        </li>
+      </ul>
+
+      <!-- Language switcher -->
+      <div class="d-flex gap-1 align-items-center mt-2 mt-lg-0">
+        <a href="?lang=en"  class="lang-btn btn btn-sm {% if lang == 'en' %}active-lang{% endif %}">EN</a>
+        <a href="?lang=hi"  class="lang-btn btn btn-sm {% if lang == 'hi' %}active-lang{% endif %}">हिं</a>
+        <a href="?lang=kn"  class="lang-btn btn btn-sm {% if lang == 'kn' %}active-lang{% endif %}">ಕ</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Flash Messages ───────────────────────────────────────── -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div class="flash-container">
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+      <i class="bi {% if category == 'success' %}bi-check-circle{% elif category == 'danger' %}bi-exclamation-circle{% else %}bi-info-circle{% endif %} me-2"></i>
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endwith %}
+
+<!-- ── Page Content ─────────────────────────────────────────── -->
+{% block content %}{% endblock %}
+
+<!-- ── Footer ──────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <p class="mb-1">
+      🇮🇳 <strong>Government Scheme Awareness Portal</strong> — Empowering Citizens with Information
+    </p>
+    <p class="mb-0" style="font-size:0.78rem;opacity:0.6;">
+      Data sourced from official government portals. For accurate & updated information visit
+      <a href="https://www.india.gov.in" target="_blank">india.gov.in</a>
+    </p>
+  </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Language switcher script -->
+<script>
+  (function() {
+    const lang = "{{ lang }}";
+    document.querySelectorAll('[data-en]').forEach(el => {
+      const txt = el.getAttribute('data-' + lang);
+      if (txt) el.textContent = txt;
+    });
+  })();
+</script>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

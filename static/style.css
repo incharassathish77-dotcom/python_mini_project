@@ -1,0 +1,610 @@
+/* ================================================================
+   Government Scheme Awareness App — Custom Stylesheet
+   Author: GovtScheme Team
+   ================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap');
+
+/* ── CSS Variables ─────────────────────────────────────────── */
+:root {
+  --primary:        #1a3c6e;
+  --primary-light:  #2563b0;
+  --secondary:      #ff6b2b;
+  --accent:         #f5a623;
+  --success:        #28a745;
+  --danger:         #dc3545;
+  --bg-dark:        #0f1f3d;
+  --bg-card:        #ffffff;
+  --text-muted:     #6c757d;
+  --border-radius:  14px;
+  --shadow-sm:      0 2px 12px rgba(26,60,110,0.10);
+  --shadow-md:      0 8px 32px rgba(26,60,110,0.14);
+  --shadow-lg:      0 16px 48px rgba(26,60,110,0.20);
+  --gradient-hero:  linear-gradient(135deg, #1a3c6e 0%, #2563b0 50%, #1a3c6e 100%);
+}
+
+/* ── Base ──────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f0f4fa;
+  color: #1a1a2e;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* ── Navbar ────────────────────────────────────────────────── */
+.navbar {
+  background: var(--gradient-hero) !important;
+  box-shadow: 0 4px 20px rgba(26,60,110,0.3);
+  padding: 0.8rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-brand {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #fff !important;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.5px;
+}
+
+.navbar-brand .brand-icon {
+  font-size: 1.6rem;
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.4));
+}
+
+.navbar .nav-link {
+  color: rgba(255,255,255,0.88) !important;
+  font-weight: 500;
+  font-size: 0.92rem;
+  padding: 0.4rem 0.9rem !important;
+  border-radius: 8px;
+  transition: all 0.25s ease;
+  letter-spacing: 0.3px;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  color: #fff !important;
+  background: rgba(255,255,255,0.18);
+}
+
+/* Language selector */
+.lang-btn {
+  border: 1.5px solid rgba(255,255,255,0.5) !important;
+  color: #fff !important;
+  background: transparent !important;
+  padding: 0.3rem 0.7rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+.lang-btn:hover, .lang-btn.active-lang {
+  background: rgba(255,255,255,0.2) !important;
+  border-color: #fff !important;
+}
+
+/* ── Hero Section ──────────────────────────────────────────── */
+.hero-section {
+  background: var(--gradient-hero);
+  color: #fff;
+  padding: 5rem 1.5rem 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: -60px; left: -80px;
+  width: 320px; height: 320px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 50%;
+}
+
+.hero-section::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; right: -60px;
+  width: 400px; height: 400px;
+  background: rgba(255,107,43,0.12);
+  border-radius: 50%;
+}
+
+.hero-section .hero-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  border: 1.5px solid rgba(255,255,255,0.3);
+  border-radius: 50px;
+  padding: 0.35rem 1.2rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  backdrop-filter: blur(8px);
+}
+
+.hero-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-title span {
+  color: var(--accent);
+  text-shadow: 0 0 30px rgba(245,166,35,0.4);
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  opacity: 0.88;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  line-height: 1.7;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Search Bar ────────────────────────────────────────────── */
+.search-wrapper {
+  position: relative;
+  max-width: 620px;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+.search-wrapper .form-control {
+  height: 56px;
+  border-radius: 50px;
+  padding: 0 140px 0 24px;
+  font-size: 1rem;
+  border: none;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.18);
+  background: #fff;
+  color: #1a1a2e;
+}
+
+.search-wrapper .form-control:focus {
+  box-shadow: 0 8px 30px rgba(0,0,0,0.22), 0 0 0 3px rgba(255,107,43,0.25);
+  outline: none;
+}
+
+.search-wrapper .search-btn {
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  height: 44px;
+  padding: 0 1.5rem;
+  border-radius: 50px;
+  background: var(--secondary);
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all 0.25s;
+  letter-spacing: 0.5px;
+}
+
+.search-wrapper .search-btn:hover {
+  background: #e55a1f;
+  transform: scale(1.04);
+}
+
+/* ── Stats Bar ─────────────────────────────────────────────── */
+.stats-bar {
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  padding: 1.2rem 0;
+}
+
+.stat-item {
+  text-align: center;
+  border-right: 1px solid #e8edf5;
+  padding: 0.5rem 1rem;
+}
+
+.stat-item:last-child { border-right: none; }
+
+.stat-number {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+}
+
+/* ── Section Heading ───────────────────────────────────────── */
+.section-heading {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 1.6rem;
+  margin-bottom: 0.3rem;
+}
+
+.section-divider {
+  width: 50px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--secondary), var(--accent));
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Scheme Cards ──────────────────────────────────────────── */
+.scheme-card {
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  border: 1.5px solid #e8edf5;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  height: 100%;
+}
+
+.scheme-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(37,99,176,0.25);
+}
+
+.scheme-card .card-header-strip {
+  height: 5px;
+  background: linear-gradient(90deg, var(--primary-light), var(--secondary));
+}
+
+.scheme-card .card-body {
+  padding: 1.4rem 1.5rem;
+}
+
+.scheme-card .scheme-name {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.badge-category {
+  display: inline-block;
+  padding: 0.25rem 0.8rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  margin-bottom: 0.8rem;
+}
+
+.badge-women   { background: #fce4ec; color: #c2185b; }
+.badge-rural   { background: #e8f5e9; color: #2e7d32; }
+.badge-child   { background: #e3f2fd; color: #1565c0; }
+.badge-default { background: #ede7f6; color: #4527a0; }
+
+/* ── Schemes Table ─────────────────────────────────────────── */
+.schemes-table {
+  background: #fff;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1.5px solid #e8edf5;
+}
+
+.schemes-table thead {
+  background: var(--gradient-hero);
+  color: #fff;
+}
+
+.schemes-table thead th {
+  font-weight: 600;
+  font-size: 0.88rem;
+  letter-spacing: 0.5px;
+  padding: 1rem 1.2rem;
+  border: none;
+  white-space: nowrap;
+}
+
+.schemes-table tbody tr {
+  border-bottom: 1px solid #f0f4fa;
+  transition: background 0.2s;
+}
+
+.schemes-table tbody tr:hover { background: #f5f9ff; }
+
+.schemes-table tbody td {
+  padding: 0.9rem 1.2rem;
+  vertical-align: middle;
+  font-size: 0.92rem;
+  color: #2d3748;
+}
+
+/* ── Buttons ───────────────────────────────────────────────── */
+.btn-primary-custom {
+  background: linear-gradient(135deg, var(--primary-light), var(--primary));
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 0.5rem 1.3rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.25s;
+  box-shadow: 0 3px 12px rgba(37,99,176,0.25);
+}
+
+.btn-primary-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37,99,176,0.35);
+  color: #fff;
+}
+
+.btn-eligibility {
+  background: linear-gradient(135deg, var(--secondary), var(--accent));
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 0.65rem 2rem;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  transition: all 0.25s;
+  box-shadow: 0 4px 16px rgba(255,107,43,0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-eligibility:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(255,107,43,0.4);
+  color: #fff;
+}
+
+/* ── Eligibility Form ──────────────────────────────────────── */
+.eligibility-card {
+  background: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  border: 1.5px solid #e8edf5;
+  padding: 2.5rem;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+.form-label-custom {
+  font-weight: 600;
+  color: var(--primary);
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+}
+
+.form-control-custom,
+.form-select-custom {
+  border: 1.5px solid #d1dce8;
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+  background: #fafbfd;
+}
+
+.form-control-custom:focus,
+.form-select-custom:focus {
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(37,99,176,0.12);
+  outline: none;
+}
+
+/* ── Scheme Detail Page ────────────────────────────────────── */
+.detail-card {
+  background: #fff;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.detail-header {
+  background: var(--gradient-hero);
+  padding: 2.5rem 2rem;
+  color: #fff;
+}
+
+.detail-header h1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  margin: 0;
+}
+
+.detail-section {
+  padding: 1.8rem 2rem;
+  border-bottom: 1px solid #f0f4fa;
+}
+
+.detail-section:last-child { border-bottom: none; }
+
+.detail-section-title {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+.detail-section-title .icon-circle {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-light), var(--primary));
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 0.9rem; flex-shrink: 0;
+}
+
+/* Document chips */
+.doc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #eef2ff;
+  color: var(--primary);
+  border: 1.5px solid #c3cfe9;
+  border-radius: 50px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin: 0.3rem;
+}
+
+/* Procedure steps */
+.procedure-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 1rem;
+}
+
+.step-number {
+  width: 32px; height: 32px;
+  min-width: 32px;
+  background: linear-gradient(135deg, var(--secondary), var(--accent));
+  color: #fff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 0.85rem;
+}
+
+.step-text {
+  padding-top: 5px;
+  font-size: 0.93rem;
+  color: #3a4a6b;
+  line-height: 1.5;
+}
+
+/* ── Eligibility Results ───────────────────────────────────── */
+.result-header-card {
+  background: var(--gradient-hero);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  color: #fff;
+  margin-bottom: 1.5rem;
+}
+
+.result-meta span {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50px;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin: 0.2rem;
+}
+
+/* ── Admin ─────────────────────────────────────────────────── */
+.admin-sidebar {
+  background: var(--gradient-hero);
+  min-height: 100vh;
+  color: #fff;
+  padding: 2rem 1rem;
+}
+
+.admin-sidebar .nav-link {
+  color: rgba(255,255,255,0.8) !important;
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.admin-sidebar .nav-link:hover,
+.admin-sidebar .nav-link.active {
+  background: rgba(255,255,255,0.18) !important;
+  color: #fff !important;
+}
+
+.admin-main {
+  background: #f0f4fa;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+/* ── Flash Messages ────────────────────────────────────────── */
+.flash-container {
+  position: fixed;
+  top: 76px; right: 16px;
+  z-index: 9999;
+  max-width: 360px;
+}
+
+.flash-container .alert {
+  border-radius: 12px;
+  font-weight: 500;
+  box-shadow: var(--shadow-md);
+  animation: slideIn 0.35s ease;
+  border: none;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100px); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
+}
+
+/* ── Footer ────────────────────────────────────────────────── */
+footer {
+  background: var(--bg-dark);
+  color: rgba(255,255,255,0.75);
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 0.85rem;
+  margin-top: 4rem;
+}
+
+footer a { color: var(--accent); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+/* ── Utilities ─────────────────────────────────────────────── */
+.text-primary-custom { color: var(--primary) !important; }
+.text-secondary-custom { color: var(--secondary) !important; }
+
+.no-results-box {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-muted);
+}
+
+.no-results-box .no-icon { font-size: 4rem; margin-bottom: 1rem; }
+
+/* ── Responsive tweaks ─────────────────────────────────────── */
+@media (max-width: 767px) {
+  .hero-section { padding: 3rem 1rem 2.5rem; }
+  .search-wrapper .form-control { padding-right: 110px; }
+  .search-wrapper .search-btn { padding: 0 1rem; }
+  .eligibility-card { padding: 1.5rem; }
+  .detail-header { padding: 1.5rem 1rem; }
+  .detail-section { padding: 1.2rem 1rem; }
+  .stat-item { border-right: none; border-bottom: 1px solid #e8edf5; }
+}
